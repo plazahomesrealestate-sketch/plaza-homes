@@ -1016,6 +1016,24 @@ function deleteProperty(id) {
 // ================= START =================
 init();
 </script>
-
+<script>
+  // الكود ده هيصلح أي زرار أدمن في الموقع ويخليه يفتح لوحة التحكم
+  document.querySelectorAll('a, button').forEach(el => {
+    if(el.innerText.toLowerCase().includes('admin') || el.innerText.includes('لوحة التحكم')) {
+      el.onclick = function(e) {
+        e.preventDefault();
+        // هنا بننادي على الفانكشن اللي بتظهر الفورم بتاعة الـ Login
+        if (typeof showLogin === "function") {
+            showLogin(); 
+        } else {
+            // لو مفيش فانكشن، بنظهر سيكشن الأدمن عل طول
+            document.getElementById('admin-section').style.display = 'block';
+            window.scrollTo(0, document.getElementById('admin-section').offsetTop);
+        }
+      };
+      el.href = "javascript:void(0)";
+    }
+  });
+</script>
 </body>
 </html>
