@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plaza Homes | لوحة التحكم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-dark: #B8941F;
+            --dark: #0a0a0a;
+            --dark-light: #121212;
+            --dark-card: #1a1a1a;
+            --dark-border: #2a2a2a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--dark);
+            color: #fff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 28px; border-radius: 8px; font-weight: 700;
+            text-decoration: none; border: none; cursor: pointer; font-family: inherit; font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .btn-gold { background: var(--gold); color: #000; }
+        .btn-gold:hover { background: var(--gold-dark); }
+        .btn-outline { border: 2px solid var(--gold); color: var(--gold); background: transparent; }
+        .btn-outline:hover { background: var(--gold); color: #000; }
+        .btn-red { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+        .btn-sm { padding: 8px 16px; font-size: 0.85rem; }
+        
+        .page { display: none; min-height: 100vh; padding-top: 40px; padding-bottom: 40px; }
+        .page.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; color: #888; font-size: 0.9rem; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 12px 16px; background: var(--dark-light); border: 1px solid var(--dark-border);
+            border-radius: 10px; color: #fff; font-family: inherit; font-size: 1rem;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--gold); }
+        .error { color: #ef4444; font-size: 0.85rem; margin-top: 5px; }
+        
+        .image-upload-area {
+            border: 2px dashed var(--dark-border); border-radius: 12px; padding: 30px;
+            text-align: center; cursor: pointer; transition: 0.3s; margin-bottom: 15px;
+        }
+        .image-upload-area:hover { border-color: var(--gold); background: rgba(212,175,55,0.05); }
+        .image-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 15px; }
+        .image-preview-item { position: relative; border-radius: 8px; overflow: hidden; aspect-ratio: 4/3; }
+        .image-preview-item img { width: 100%; height: 100%; object-fit: cover; }
+        .image-preview-item .remove-img {
+            position: absolute; top: 4px; left: 4px; background: #ef4444; color: #fff;
+            border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer;
+            font-size: 0.8rem; display: grid; place-items: center;
+        }
+        
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .admin-table th, .admin-table td { text-align: right; padding: 15px; border-bottom: 1px solid var(--dark-border); }
+        .admin-table th { color: #888; font-weight: 600; font-size: 0.9rem; }
+        .admin-table tr:hover { background: rgba(255,255,255,0.02); }
+        .action-btn { padding: 8px; border-radius: 6px; border: none; cursor: pointer; margin-left: 5px; }
+        
+        .hidden { display: none !important; }
+        
+        @media (max-width: 768px) {
+            .admin-table { font-size: 0.85rem; }
+            .admin-table th, .admin-table td { padding: 10px 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<div id="page-login" class="page active" style="display:flex; align-items:center; justify-content:center; min-height:100vh;">
+    <div style="background:var(--dark-card); border:1px solid var(--dark-border); border-radius:16px; padding:40px; width:100%; max-width:450px;">
+        <div style="text-align:center; margin-bottom:30px;">
+            <div style="width:60px; height:60px; background:rgba(212,175,55,0.1); border-radius:50%; display:grid; place-items:center; margin:0 auto 15px; font-size:1.5rem;">🛡️</div>
+            <h2 style="font-size:1.5rem; font-weight:800;">تسجيل دخول الأدمن</h2>
+            <p style="color:#888; font-size:0.9rem; margin-top:5px;">Plaza Homes Management</p>
+        </div>
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label>اسم المستخدم</label>
+                <input type="text" id="login-user" placeholder="admin">
+            </div>
+            <div class="form-group">
+                <label>كلمة المرور</label>
+                <input type="password" id="login-pass" placeholder="••••••••">
+            </div>
+            <div class="error hidden" id="login-error" style="margin-bottom:15px; text-align:center;">بيانات الدخول غير صحيحة</div>
+            <button type="submit" class="btn btn-gold" style="width:100%; justify-content:center;">دخول</button>
+        </form>
+        <div style="margin-top:20px; text-align:center;">
+            <a href="index.html" style="color:var(--gold); text-decoration:none; font-size:0.9rem;">← العودة للموقع</a>
+        </div>
+    </div>
+</div>
+
+<!-- DASHBOARD PAGE -->
+<div id="page-dashboard" class="page">
+    <div class="container">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:15px;">
+            <div>
+                <h2 style="font-size:1.8rem; font-weight:800;">لوحة التحكم</h2>
+                <p style="color:#888;">إدارة العقارات</p>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button class="btn btn-gold btn-sm" onclick="showPropertyForm()">+ إضافة عقار</button>
+                <button class="btn btn-red btn-sm" onclick="adminLogout()">خروج</button>
+            </div>
+        </div>
+        
+        <div id="property-form-container" class="hidden" style="background:var(--dark-card); border:1px solid var(--dark-border); border-radius:16px; padding:25px; margin-bottom:30px;">
+            <h3 id="form-title" style="margin-bottom:20px; font-size:1.3rem;">إضافة عقار جديد</h3>
+            <form id="propertyForm" onsubmit="saveProperty(event)">
+                <input type="hidden" id="edit-id">
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:15px;">
+                    <div class="form-group">
+                        <label>العنوان *</label>
+                        <input type="text" id="p-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>النوع *</label>
+                        <select id="p-type" required>
+                            <option value="sale">للبيع</option>
+                            <option value="rent">للإيجار</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>السعر *</label>
+                        <input type="number" id="p-price" required>
+                    </div>
+                    <div class="form-group">
+                        <label>المساحة (م²) *</label>
+                        <input type="number" id="p-area" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الغرف *</label>
+                        <input type="number" id="p-rooms" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الحمامات *</label>
+                        <input type="number" id="p-bathrooms" required>
+                    </div>
+                    <div class="form-group">
+                        <label>المنطقة *</label>
+                        <input type="text" id="p-location" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الدور</label>
+                        <input type="text" id="p-floor" placeholder="مثال: الدور الثالث">
+                    </div>
+                    <div class="form-group">
+                        <label>طريقة الدفع</label>
+                        <input type="text" id="p-payment" value="كاش">
+                    </div>
+                    <div class="form-group" style="display:flex; align-items:center; gap:10px; padding-top:30px;">
+                        <input type="checkbox" id="p-featured" style="width:20px; height:20px; accent-color:var(--gold);">
+                        <label for="p-featured" style="margin:0;">عقار مميز</label>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="margin-top:15px;">
+                    <label>صور العقار</label>
+                    <div class="image-upload-area" onclick="document.getElementById('p-images').click()">
+                        <div style="font-size:2rem; margin-bottom:10px;">📷</div>
+                        <p style="color:#888;">اضغط هنا لاختيار الصور من جهازك</p>
+                        <p style="color:#666; font-size:0.8rem; margin-top:5px;">يمكنك اختيار أكثر من صورة</p>
+                    </div>
+                    <input type="file" id="p-images" multiple accept="image/*" class="hidden" onchange="handleImageSelect(event)">
+                    <div class="image-preview-grid" id="image-preview-grid"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label>الوصف *</label>
+                    <textarea id="p-desc" rows="3" required></textarea>
+                </div>
+                <div style="display:flex; gap:10px; margin-top:15px;">
+                    <button type="submit" class="btn btn-gold">💾 حفظ</button>
+                    <button type="button" class="btn btn-outline" onclick="hidePropertyForm()">إلغاء</button>
+                </div>
+            </form>
+        </div>
+        
+        <div style="overflow-x:auto;">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>الكود</th>
+                        <th>العنوان</th>
+                        <th>النوع</th>
+                        <th>السعر</th>
+                        <th>المنطقة</th>
+                        <th>الصور</th>
+                        <th>إجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-table-body"></tbody>
+            </table>
+        </div>
+        
+        <div id="no-props" class="hidden" style="text-align:center; padding:60px 20px;">
+            <div style="font-size:3rem; margin-bottom:15px;">🏢</div>
+            <h3>لا توجد عقارات</h3>
+            <p style="color:#888;">أضف أول عقار باستخدام الزر أعلاه</p>
+        </div>
+    </div>
+</div>
+
+<script>
+const defaultProperties = [
+    {
+        id: '1', code: 'PLZ-101', title: 'شقة فاخرة في جاردينيا سيتي', type: 'sale',
+        price: 3200000, area: 120, rooms: 3, bathrooms: 2,
+        location: 'جاردينيا سيتي', floor: 'الدور الثالث',
+        paymentType: 'كاش أو تقسيط', featured: true,
+        description: 'شقة سوبر لوكس بإطلالة مفتوحة، تكييف كامل، جاهزة للسكن. في قلب جاردينيا سيتي بإطلالة على اللاندسكيب.',
+        images: [
+            'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80',
+            'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80'
+        ]
+    },
+    {
+        id: '2', code: 'PLZ-102', title: 'شقة عائلية واسعة', type: 'sale',
+        price: 1850000, area: 160, rooms: 3, bathrooms: 2,
+        location: 'عمارات الأهلي', floor: 'الدور الخامس',
+        paymentType: 'كاش', featured: true,
+        description: 'شقة كورنر بتشطيب ألترا سوبر لوكس على شارع الجامعة. أول سكن، إطلالة مفتوحة.',
+        images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80']
+    },
+    {
+        id: '3', code: 'PLZ-103', title: 'شقة حديثة للإيجار', type: 'rent',
+        price: 12000, area: 135, rooms: 3, bathrooms: 1,
+        location: 'شارع الجامعة - الزهراء', floor: 'الدور الثاني',
+        paymentType: 'شهري', featured: true,
+        description: 'شقة مفروشة بالكامل للإيجار. تشطيب فاخر جداً، خطوات من شارع الميثاق الرئيسي.',
+        images: ['https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80']
+    },
+    {
+        id: '4', code: 'PLZ-104', title: 'شقة بريميوم في بلازا تاورز', type: 'sale',
+        price: 6800000, area: 205, rooms: 4, bathrooms: 3,
+        location: 'بلازا تاورز', floor: 'الدور الثامن',
+        paymentType: 'تقسيط حتى 10 سنوات', featured: false,
+        description: 'شقة سكن ضباط في بلازا تاورز. تصميم موحد فائق الحداثة، موقع مميز مقابل أكاديمية الشرطة.',
+        images: ['https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80']
+    },
+    {
+        id: '5', code: 'PLZ-105', title: 'شقة 2 غرفة مريحة', type: 'rent',
+        price: 8000, area: 100, rooms: 2, bathrooms: 1,
+        location: 'مساكن الزهراء', floor: 'الدور الأرضي',
+        paymentType: 'شهري', featured: false,
+        description: 'شقة أرضية بحديقة صغيرة. مثالية للعائلات الصغيرة. قريبة من جنينة مول والمواصلات.',
+        images: ['https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=80']
+    },
+    {
+        id: '6', code: 'PLZ-106', title: 'فرصة استثمارية - 2 غرفة', type: 'sale',
+        price: 1550000, area: 110, rooms: 2, bathrooms: 2,
+        location: 'الأربعين', floor: 'الدور الرابع',
+        paymentType: 'كاش', featured: true,
+        description: 'فرصة استثمارية ممتازة. شقة في موقع مميز بتشطيب سوبر لوكس. سهولة الوصول لطريق السويس والمطار.',
+        images: ['https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&q=80']
+    },
+    {
+        id: '7', code: 'PLZ-107', title: 'شقة نصف مفروشة', type: 'rent',
+        price: 9500, area: 150, rooms: 3, bathrooms: 2,
+        location: 'شارع الميثاق', floor: 'الدور الثالث',
+        paymentType: 'شهري', featured: false,
+        description: 'شقة نصف مفروشة على شارع الميثاق الرئيسي. عمارة حجر أحمر، واجهة أمامية، إضاءة طبيعية ممتازة.',
+        images: ['https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?w=800&q=80']
+    },
+    {
+        id: '8', code: 'PLZ-108', title: 'دوبلكس بحديقة', type: 'sale',
+        price: 4500000, area: 250, rooms: 4, bathrooms: 3,
+        location: 'جاردينيا سيتي', floor: 'أرضي + أول',
+        paymentType: 'تقسيط حتى 12 سنة', featured: true,
+        description: 'دوبلكس فاخر بحديقة خاصة. إطلالة جولف، تشطيب كامل بالتكييفات. نظام تقسيط يصل لـ 12 سنة.',
+        images: [
+            'https://images.unsplash.com/photo-1600047509358-9dc75507daeb?w=800&q=80',
+            'https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=800&q=80'
+        ]
+    }
+];
+
+let properties = JSON.parse(localStorage.getItem('plaza_props')) || defaultProperties;
+let isAdmin = localStorage.getItem('plaza_admin') === 'true';
+let tempImages = [];
+
+function init() {
+    if(isAdmin) {
+        showDashboard();
+    } else {
+        showLogin();
+    }
+}
+
+function showLogin() {
+    document.getElementById('page-login').classList.add('active');
+    document.getElementById('page-dashboard').classList.remove('active');
+}
+
+function showDashboard() {
+    document.getElementById('page-login').classList.remove('active');
+    document.getElementById('page-dashboard').classList.add('active');
+    renderAdminTable();
+}
+
+function handleLogin(e) {
+    e.preventDefault();
+    const u = document.getElementById('login-user').value;
+    const p = document.getElementById('login-pass').value;
+    
+    if(u === 'admin' && p === 'R3A-2026') {
+        isAdmin = true;
+        localStorage.setItem('plaza_admin', 'true');
+        showDashboard();
+    } else {
+        document.getElementById('login-error').classList.remove('hidden');
+    }
+}
+
+function adminLogout() {
+    isAdmin = false;
+    localStorage.removeItem('plaza_admin');
+    showLogin();
+}
+
+function renderAdminTable() {
+    const tbody = document.getElementById('admin-table-body');
+    
+    if(properties.length === 0) {
+        document.getElementById('no-props').classList.remove('hidden');
+        tbody.innerHTML = '';
+        return;
+    }
+    document.getElementById('no-props').classList.add('hidden');
+    
+    tbody.innerHTML = properties.map(p => `
+        <tr>
+            <td style="color:var(--gold); font-family:monospace;">${p.code}</td>
+            <td>${p.title}</td>
+            <td><span style="padding:4px 10px; border-radius:50px; font-size:0.75rem; background:${p.type==='sale'?'rgba(212,175,55,0.1)':'rgba(59,130,246,0.1)'}; color:${p.type==='sale'?'var(--gold)':'#3b82f6'};">${p.type==='sale'?'للبيع':'للإيجار'}</span></td>
+            <td>${p.price.toLocaleString()}</td>
+            <td>${p.location}</td>
+            <td><span style="background:var(--dark-light); padding:4px 10px; border-radius:6px; font-size:0.8rem;">${p.images.length} صورة</span></td>
+            <td>
+                <button class="action-btn" style="background:rgba(59,130,246,0.1); color:#3b82f6;" onclick="editProperty('${p.id}')">✏️</button>
+                <button class="action-btn" style="background:rgba(239,68,68,0.1); color:#ef4444;" onclick="deleteProperty('${p.id}')">🗑️</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function handleImageSelect(e) {
+    const files = Array.from(e.target.files);
+    if(!files.length) return;
+    
+    files.forEach(file => {
+        if(!file.type.startsWith('image/')) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            tempImages.push(event.target.result);
+            renderImagePreview();
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function renderImagePreview() {
+    const grid = document.getElementById('image-preview-grid');
+    grid.innerHTML = tempImages.map((img, idx) => `
+        <div class="image-preview-item">
+            <img src="${img}" alt="Preview">
+            <button type="button" class="remove-img" onclick="removeTempImage(${idx})">×</button>
+        </div>
+    `).join('');
+}
+
+function removeTempImage(idx) {
+    tempImages.splice(idx, 1);
+    renderImagePreview();
+}
+
+function showPropertyForm() {
+    document.getElementById('property-form-container').classList.remove('hidden');
+    document.getElementById('form-title').textContent = 'إضافة عقار جديد';
+    document.getElementById('propertyForm').reset();
+    document.getElementById('edit-id').value = '';
+    tempImages = [];
+    renderImagePreview();
+}
+
+function hidePropertyForm() {
+    document.getElementById('property-form-container').classList.add('hidden');
+    tempImages = [];
+    renderImagePreview();
+}
+
+function editProperty(id) {
+    const p = properties.find(x => x.id === id);
+    if(!p) return;
+    
+    document.getElementById('edit-id').value = p.id;
+    document.getElementById('p-title').value = p.title;
+    document.getElementById('p-type').value = p.type;
+    document.getElementById('p-price').value = p.price;
+    document.getElementById('p-area').value = p.area;
+    document.getElementById('p-rooms').value = p.rooms;
+    document.getElementById('p-bathrooms').value = p.bathrooms;
+    document.getElementById('p-location').value = p.location;
+    document.getElementById('p-floor').value = p.floor || '';
+    document.getElementById('p-payment').value = p.paymentType;
+    document.getElementById('p-desc').value = p.description;
+    document.getElementById('p-featured').checked = p.featured;
+    
+    tempImages = [...(p.images || [])];
+    renderImagePreview();
+    
+    document.getElementById('form-title').textContent = 'تعديل عقار';
+    document.getElementById('property-form-container').classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function saveProperty(e) {
+    e.preventDefault();
+    const id = document.getElementById('edit-id').value;
+    
+    const data = {
+        title: document.getElementById('p-title').value,
+        type: document.getElementById('p-type').value,
+        price: Number(document.getElementById('p-price').value),
+        area: Number(document.getElementById('p-area').value),
+        rooms: Number(document.getElementById('p-rooms').value),
+        bathrooms: Number(document.getElementById('p-bathrooms').value),
+        location: document.getElementById('p-location').value,
+        floor: document.getElementById('p-floor').value,
+        paymentType: document.getElementById('p-payment').value,
+        description: document.getElementById('p-desc').value,
+        featured: document.getElementById('p-featured').checked,
+        images: tempImages.length > 0 ? tempImages : ['https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80']
+    };
+    
+    if(id) {
+        const idx = properties.findIndex(x => x.id === id);
+        properties[idx] = { ...properties[idx], ...data };
+    } else {
+        const newId = Date.now().toString();
+        const newCode = 'PLZ-' + (100 + properties.length + 1);
+        properties.unshift({ ...data, id: newId, code: newCode });
+    }
+    
+    localStorage.setItem('plaza_props', JSON.stringify(properties));
+    hidePropertyForm();
+    renderAdminTable();
+}
+
+function deleteProperty(id) {
+    if(confirm('هل أنت متأكد من حذف هذا العقار؟')) {
+        properties = properties.filter(p => p.id !== id);
+        localStorage.setItem('plaza_props', JSON.stringify(properties));
+        renderAdminTable();
+    }
+}
+
+init();
+</script>
+
+</body>
+</html>
