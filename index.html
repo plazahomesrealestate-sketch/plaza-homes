@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta name="google-site-verification" content="kjipR_culvZ48UqzXZdsdlNnclk6G-qUdcv7irmVKjM" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plaza Homes | زهراء مدينة نصر</title>
+    <title>Plaza Homes | زهراء مدينة نصر - عقارات للبيع والإيجار</title>
+    <meta name="description" content="أفضل صفقات العقارات للبيع والإيجار في زهراء مدينة نصر. شقق فاخرة بأسعار مميزة.">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -33,7 +33,7 @@
         }
         .nav-inner { display: flex; justify-content: space-between; align-items: center; height: 70px; }
         .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.3rem; }
-        .logo-icon { width: 40px; height: 40px; background: var(--gold); border-radius: 8px; display: grid; place-items: center; color: #000; }
+        .logo-icon { width: 40px; height: 40px; background: var(--gold); border-radius: 8px; display: grid; place-items: center; color: #000; font-size: 1.2rem; }
         .nav-links { display: flex; gap: 30px; list-style: none; }
         .nav-links a { color: #aaa; text-decoration: none; font-weight: 600; transition: 0.3s; cursor: pointer; }
         .nav-links a:hover, .nav-links a.active { color: var(--gold); }
@@ -52,8 +52,6 @@
         .btn-outline:hover { background: var(--gold); color: #000; }
         .btn-green { background: #25D366; color: #fff; }
         .btn-green:hover { background: #1da851; }
-        .btn-red { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
-        .btn-sm { padding: 8px 16px; font-size: 0.85rem; }
         
         /* Pages */
         .page { display: none; padding-top: 70px; min-height: 100vh; }
@@ -140,34 +138,12 @@
         .contact-info-card p, .contact-info-card a { color: #888; text-decoration: none; }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; color: #888; font-size: 0.9rem; }
-        .form-group input, .form-group textarea, .form-group select {
+        .form-group input, .form-group textarea {
             width: 100%; padding: 12px 16px; background: var(--dark-light); border: 1px solid var(--dark-border);
             border-radius: 10px; color: #fff; font-family: inherit; font-size: 1rem;
         }
         .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--gold); }
         .error { color: #ef4444; font-size: 0.85rem; margin-top: 5px; }
-        
-        /* Image Upload */
-        .image-upload-area {
-            border: 2px dashed var(--dark-border); border-radius: 12px; padding: 30px;
-            text-align: center; cursor: pointer; transition: 0.3s; margin-bottom: 15px;
-        }
-        .image-upload-area:hover { border-color: var(--gold); background: rgba(212,175,55,0.05); }
-        .image-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 15px; }
-        .image-preview-item { position: relative; border-radius: 8px; overflow: hidden; aspect-ratio: 4/3; }
-        .image-preview-item img { width: 100%; height: 100%; object-fit: cover; }
-        .image-preview-item .remove-img {
-            position: absolute; top: 4px; left: 4px; background: #ef4444; color: #fff;
-            border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer;
-            font-size: 0.8rem; display: grid; place-items: center;
-        }
-        
-        /* Admin */
-        .admin-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        .admin-table th, .admin-table td { text-align: right; padding: 15px; border-bottom: 1px solid var(--dark-border); }
-        .admin-table th { color: #888; font-weight: 600; font-size: 0.9rem; }
-        .admin-table tr:hover { background: rgba(255,255,255,0.02); }
-        .action-btn { padding: 8px; border-radius: 6px; border: none; cursor: pointer; margin-left: 5px; }
         
         /* WhatsApp Float */
         .wa-float {
@@ -190,7 +166,6 @@
         .section { padding: 60px 0; }
         .section-title { font-size: 2rem; font-weight: 800; margin-bottom: 10px; text-align: center; }
         .section-subtitle { color: #888; text-align: center; margin-bottom: 40px; }
-        .text-gold { color: var(--gold); }
         .hidden { display: none !important; }
         
         @media (max-width: 768px) {
@@ -216,7 +191,6 @@
             <li><a onclick="router('home')" class="active" id="nav-home">الرئيسية</a></li>
             <li><a onclick="router('properties')" id="nav-properties">العقارات</a></li>
             <li><a onclick="router('contact')" id="nav-contact">تواصل معنا</a></li>
-            <!-- Admin link removed from public nav -->
         </ul>
         <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
     </div>
@@ -359,139 +333,6 @@
     </div>
 </div>
 
-<!-- ADMIN LOGIN PAGE -->
-<div id="page-admin" class="page">
-    <div style="min-height:80vh; display:flex; align-items:center; justify-content:center;">
-        <div style="background:var(--dark-card); border:1px solid var(--dark-border); border-radius:16px; padding:40px; width:100%; max-width:450px;">
-            <div style="text-align:center; margin-bottom:30px;">
-                <div style="width:60px; height:60px; background:rgba(212,175,55,0.1); border-radius:50%; display:grid; place-items:center; margin:0 auto 15px; font-size:1.5rem;">🛡️</div>
-                <h2>تسجيل دخول الأدمن</h2>
-            </div>
-            <form id="loginForm" onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label>اسم المستخدم</label>
-                    <input type="text" id="login-user" placeholder="admin">
-                </div>
-                <div class="form-group">
-                    <label>كلمة المرور</label>
-                    <input type="password" id="login-pass" placeholder="••••••••">
-                </div>
-                <div class="error hidden" id="login-error" style="margin-bottom:15px; text-align:center;">بيانات الدخول غير صحيحة</div>
-                <button type="submit" class="btn btn-gold" style="width:100%; justify-content:center;">دخول</button>
-            </form>
-            <div style="margin-top:20px; text-align:center;">
-                <a onclick="router('home')" style="color:var(--gold); cursor:pointer; font-size:0.9rem;">العودة للموقع</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ADMIN DASHBOARD PAGE -->
-<div id="page-admin-dashboard" class="page">
-    <div class="container section">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:15px;">
-            <div>
-                <h2>لوحة التحكم</h2>
-                <p style="color:#888;">إدارة العقارات</p>
-            </div>
-            <div style="display:flex; gap:10px;">
-                <button class="btn btn-gold" onclick="showPropertyForm()">+ إضافة عقار</button>
-                <button class="btn btn-red" onclick="adminLogout()">خروج</button>
-            </div>
-        </div>
-        
-        <div id="property-form-container" class="hidden" style="background:var(--dark-card); border:1px solid var(--dark-border); border-radius:16px; padding:25px; margin-bottom:30px;">
-            <h3 id="form-title" style="margin-bottom:20px;">إضافة عقار جديد</h3>
-            <form id="propertyForm" onsubmit="saveProperty(event)">
-                <input type="hidden" id="edit-id">
-                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:15px;">
-                    <div class="form-group">
-                        <label>العنوان *</label>
-                        <input type="text" id="p-title" required>
-                    </div>
-                    <div class="form-group">
-                        <label>النوع *</label>
-                        <select id="p-type" required>
-                            <option value="sale">للبيع</option>
-                            <option value="rent">للإيجار</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>السعر *</label>
-                        <input type="number" id="p-price" required>
-                    </div>
-                    <div class="form-group">
-                        <label>المساحة (م²) *</label>
-                        <input type="number" id="p-area" required>
-                    </div>
-                    <div class="form-group">
-                        <label>الغرف *</label>
-                        <input type="number" id="p-rooms" required>
-                    </div>
-                    <div class="form-group">
-                        <label>الحمامات *</label>
-                        <input type="number" id="p-bathrooms" required>
-                    </div>
-                    <div class="form-group">
-                        <label>المنطقة *</label>
-                        <input type="text" id="p-location" required>
-                    </div>
-                    <div class="form-group">
-                        <label>الدور</label>
-                        <input type="text" id="p-floor" placeholder="مثال: الدور الثالث">
-                    </div>
-                    <div class="form-group">
-                        <label>طريقة الدفع</label>
-                        <input type="text" id="p-payment" value="كاش">
-                    </div>
-                    <div class="form-group" style="display:flex; align-items:center; gap:10px; padding-top:30px;">
-                        <input type="checkbox" id="p-featured" style="width:20px; height:20px;">
-                        <label for="p-featured" style="margin:0;">عقار مميز</label>
-                    </div>
-                </div>
-                
-                <!-- Image Upload Section -->
-                <div class="form-group" style="margin-top:15px;">
-                    <label>صور العقار</label>
-                    <div class="image-upload-area" onclick="document.getElementById('p-images').click()">
-                        <div style="font-size:2rem; margin-bottom:10px;">📷</div>
-                        <p style="color:#888;">اضغط هنا لاختيار الصور من جهازك</p>
-                        <p style="color:#666; font-size:0.8rem; margin-top:5px;">يمكنك اختيار أكثر من صورة</p>
-                    </div>
-                    <input type="file" id="p-images" multiple accept="image/*" class="hidden" onchange="handleImageSelect(event)">
-                    <div class="image-preview-grid" id="image-preview-grid"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label>الوصف *</label>
-                    <textarea id="p-desc" rows="3" required></textarea>
-                </div>
-                <div style="display:flex; gap:10px; margin-top:15px;">
-                    <button type="submit" class="btn btn-gold">💾 حفظ</button>
-                    <button type="button" class="btn btn-outline" onclick="hidePropertyForm()">إلغاء</button>
-                </div>
-            </form>
-        </div>
-        
-        <div style="overflow-x:auto;">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>الكود</th>
-                        <th>العنوان</th>
-                        <th>النوع</th>
-                        <th>السعر</th>
-                        <th>المنطقة</th>
-                        <th>الصور</th>
-                        <th>إجراءات</th>
-                    </tr>
-                </thead>
-                <tbody id="admin-table-body"></tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
 <!-- Footer -->
 <footer>
     <div class="container">
@@ -522,7 +363,6 @@
 </footer>
 
 <script>
-// ================= DATA =================
 const defaultProperties = [
     {
         id: '1', code: 'PLZ-101', title: 'شقة فاخرة في جاردينيا سيتي', type: 'sale',
@@ -596,23 +436,17 @@ const defaultProperties = [
     }
 ];
 
-// ================= STATE =================
 let properties = JSON.parse(localStorage.getItem('plaza_props')) || defaultProperties;
-let isAdmin = localStorage.getItem('plaza_admin') === 'true';
 let currentFilter = { type: 'all', min: '', max: '', rooms: 'all', location: 'all' };
 let currentDetailId = null;
 let currentImageIndex = 0;
-let tempImages = []; // For new property images (base64)
 
-// ================= INIT =================
 function init() {
     populateLocations();
     renderFeatured();
     applyFilters();
-    if(isAdmin) router('admin-dashboard');
 }
 
-// ================= ROUTER =================
 function router(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
@@ -631,15 +465,6 @@ function router(page) {
         document.getElementById('page-contact').classList.add('active');
         document.getElementById('nav-contact').classList.add('active');
     }
-    else if(page === 'admin') {
-        if(isAdmin) { router('admin-dashboard'); return; }
-        document.getElementById('page-admin').classList.add('active');
-    }
-    else if(page === 'admin-dashboard') {
-        if(!isAdmin) { router('admin'); return; }
-        document.getElementById('page-admin-dashboard').classList.add('active');
-        renderAdminTable();
-    }
     else if(page === 'detail') {
         document.getElementById('page-detail').classList.add('active');
         renderDetail();
@@ -653,7 +478,6 @@ function toggleMenu() {
     document.getElementById('navLinks').classList.toggle('active');
 }
 
-// ================= RENDERERS =================
 function renderFeatured() {
     const featured = properties.filter(p => p.featured).slice(0,4);
     document.getElementById('featured-grid').innerHTML = featured.map(p => propertyCard(p)).join('');
@@ -835,7 +659,6 @@ function setDetailImage(idx) {
     });
 }
 
-// ================= CONTACT =================
 function handleContact(e) {
     e.preventDefault();
     let valid = true;
@@ -861,179 +684,8 @@ function handleContact(e) {
     }
 }
 
-// ================= IMAGE UPLOAD =================
-function handleImageSelect(e) {
-    const files = Array.from(e.target.files);
-    if(!files.length) return;
-    
-    files.forEach(file => {
-        if(!file.type.startsWith('image/')) return;
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            tempImages.push(event.target.result);
-            renderImagePreview();
-        };
-        reader.readAsDataURL(file);
-    });
-}
-
-function renderImagePreview() {
-    const grid = document.getElementById('image-preview-grid');
-    grid.innerHTML = tempImages.map((img, idx) => `
-        <div class="image-preview-item">
-            <img src="${img}" alt="Preview">
-            <button type="button" class="remove-img" onclick="removeTempImage(${idx})">×</button>
-        </div>
-    `).join('');
-}
-
-function removeTempImage(idx) {
-    tempImages.splice(idx, 1);
-    renderImagePreview();
-}
-
-// ================= ADMIN =================
-function handleLogin(e) {
-    e.preventDefault();
-    const u = document.getElementById('login-user').value;
-    const p = document.getElementById('login-pass').value;
-    
-    if(u === 'admin' && p === 'R3A-2026') {
-        isAdmin = true;
-        localStorage.setItem('plaza_admin', 'true');
-        router('admin-dashboard');
-    } else {
-        document.getElementById('login-error').classList.remove('hidden');
-    }
-}
-
-function adminLogout() {
-    isAdmin = false;
-    localStorage.removeItem('plaza_admin');
-    router('home');
-}
-
-function renderAdminTable() {
-    const tbody = document.getElementById('admin-table-body');
-    tbody.innerHTML = properties.map(p => `
-        <tr>
-            <td style="color:var(--gold); font-family:monospace;">${p.code}</td>
-            <td>${p.title}</td>
-            <td><span style="padding:4px 10px; border-radius:50px; font-size:0.75rem; background:${p.type==='sale'?'rgba(212,175,55,0.1)':'rgba(59,130,246,0.1)'}; color:${p.type==='sale'?'var(--gold)':'#3b82f6'};">${p.type==='sale'?'للبيع':'للإيجار'}</span></td>
-            <td>${p.price.toLocaleString()}</td>
-            <td>${p.location}</td>
-            <td><span style="background:var(--dark-light); padding:4px 10px; border-radius:6px; font-size:0.8rem;">${p.images.length} صورة</span></td>
-            <td>
-                <button class="action-btn" style="background:rgba(59,130,246,0.1); color:#3b82f6;" onclick="editProperty('${p.id}')">✏️</button>
-                <button class="action-btn" style="background:rgba(239,68,68,0.1); color:#ef4444;" onclick="deleteProperty('${p.id}')">🗑️</button>
-            </td>
-        </tr>
-    `).join('');
-}
-
-function showPropertyForm() {
-    document.getElementById('property-form-container').classList.remove('hidden');
-    document.getElementById('form-title').textContent = 'إضافة عقار جديد';
-    document.getElementById('propertyForm').reset();
-    document.getElementById('edit-id').value = '';
-    tempImages = [];
-    renderImagePreview();
-}
-
-function hidePropertyForm() {
-    document.getElementById('property-form-container').classList.add('hidden');
-    tempImages = [];
-    renderImagePreview();
-}
-
-function editProperty(id) {
-    const p = properties.find(x => x.id === id);
-    if(!p) return;
-    
-    document.getElementById('edit-id').value = p.id;
-    document.getElementById('p-title').value = p.title;
-    document.getElementById('p-type').value = p.type;
-    document.getElementById('p-price').value = p.price;
-    document.getElementById('p-area').value = p.area;
-    document.getElementById('p-rooms').value = p.rooms;
-    document.getElementById('p-bathrooms').value = p.bathrooms;
-    document.getElementById('p-location').value = p.location;
-    document.getElementById('p-floor').value = p.floor || '';
-    document.getElementById('p-payment').value = p.paymentType;
-    document.getElementById('p-desc').value = p.description;
-    document.getElementById('p-featured').checked = p.featured;
-    
-    tempImages = [...(p.images || [])];
-    renderImagePreview();
-    
-    document.getElementById('form-title').textContent = 'تعديل عقار';
-    document.getElementById('property-form-container').classList.remove('hidden');
-}
-
-function saveProperty(e) {
-    e.preventDefault();
-    const id = document.getElementById('edit-id').value;
-    
-    const data = {
-        title: document.getElementById('p-title').value,
-        type: document.getElementById('p-type').value,
-        price: Number(document.getElementById('p-price').value),
-        area: Number(document.getElementById('p-area').value),
-        rooms: Number(document.getElementById('p-rooms').value),
-        bathrooms: Number(document.getElementById('p-bathrooms').value),
-        location: document.getElementById('p-location').value,
-        floor: document.getElementById('p-floor').value,
-        paymentType: document.getElementById('p-payment').value,
-        description: document.getElementById('p-desc').value,
-        featured: document.getElementById('p-featured').checked,
-        images: tempImages.length > 0 ? tempImages : ['https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80']
-    };
-    
-    if(id) {
-        const idx = properties.findIndex(x => x.id === id);
-        properties[idx] = { ...properties[idx], ...data };
-    } else {
-        const newId = Date.now().toString();
-        const newCode = 'PLZ-' + (100 + properties.length + 1);
-        properties.unshift({ ...data, id: newId, code: newCode });
-    }
-    
-    localStorage.setItem('plaza_props', JSON.stringify(properties));
-    hidePropertyForm();
-    renderAdminTable();
-    populateLocations();
-}
-
-function deleteProperty(id) {
-    if(confirm('هل أنت متأكد من حذف هذا العقار؟')) {
-        properties = properties.filter(p => p.id !== id);
-        localStorage.setItem('plaza_props', JSON.stringify(properties));
-        renderAdminTable();
-        populateLocations();
-    }
-}
-
-// ================= START =================
 init();
 </script>
-<script>
-  // الكود ده هيصلح أي زرار أدمن في الموقع ويخليه يفتح لوحة التحكم
-  document.querySelectorAll('a, button').forEach(el => {
-    if(el.innerText.toLowerCase().includes('admin') || el.innerText.includes('لوحة التحكم')) {
-      el.onclick = function(e) {
-        e.preventDefault();
-        // هنا بننادي على الفانكشن اللي بتظهر الفورم بتاعة الـ Login
-        if (typeof showLogin === "function") {
-            showLogin(); 
-        } else {
-            // لو مفيش فانكشن، بنظهر سيكشن الأدمن عل طول
-            document.getElementById('admin-section').style.display = 'block';
-            window.scrollTo(0, document.getElementById('admin-section').offsetTop);
-        }
-      };
-      el.href = "javascript:void(0)";
-    }
-  });
-</script>
+
 </body>
 </html>
